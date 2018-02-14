@@ -115,7 +115,7 @@
 
     <Button
         android:id="@+id/btn_fling"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="296dp"
         android:text="fling, velocity: 0"
