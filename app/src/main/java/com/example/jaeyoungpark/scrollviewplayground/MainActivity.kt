@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
         btn_fling.setOnClickListener {
             scrollview.fling(progress2flingVelocity(seekBar.progress))
         }
+
+        btn_arrowScroll.setOnClickListener {
+            scrollview.fullScroll(View.FOCUS_DOWN)
+        }
     }
 
     fun showItsDetails(v: TextView) {
