@@ -3,9 +3,11 @@ package com.example.jaeyoungpark.scrollviewplayground
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.SeekBar
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 
+const val SEEKBAR_MAX = 10000
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +21,33 @@ class MainActivity : AppCompatActivity() {
                 tv12
         ).forEach { it.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom -> showItsDetails(it) } }
 
-        btn.setOnClickListener { scrollview.fling(1000) }
+
+
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                btn_fling.text = "fling, velocity: ${progress2flingVelocity(seekBar.progress)}"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+
+        seekBar.max = SEEKBAR_MAX
+        btn_fling.setOnClickListener {
+            scrollview.fling(progress2flingVelocity(seekBar.progress))
+        }
     }
 
     fun showItsDetails(v: TextView) {
         v.text = "id=${v.id}, top=${v.top}, bottom=${v.bottom}"
+    }
+
+    fun progress2flingVelocity(progress: Int): Int {
+        return progress - SEEKBAR_MAX / 2
     }
 }

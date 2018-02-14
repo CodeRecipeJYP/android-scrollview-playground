@@ -114,12 +114,23 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btn_fling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fling"
-         />
+        android:layout_marginEnd="296dp"
+        android:text="fling, velocity: 0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_fling" />
 
 
 </android.support.constraint.ConstraintLayout>
