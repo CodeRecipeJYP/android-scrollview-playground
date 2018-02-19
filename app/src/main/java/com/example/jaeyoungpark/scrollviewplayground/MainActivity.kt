@@ -2,13 +2,21 @@ package com.example.jaeyoungpark.scrollviewplayground
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.widget.AutoScrollHelper
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
+import android.view.ViewTreeObserver
+
+
 
 const val SEEKBAR_MAX = 10000
 class MainActivity : AppCompatActivity() {
+    private val TAG = MainActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +49,36 @@ class MainActivity : AppCompatActivity() {
         btn_fling.setOnClickListener {
             scrollview.fling(progress2flingVelocity(seekBar.progress))
         }
+
+
+
+
+        val intervalPeriodInMillis = 20.toLong()
+        val totalDurationInSeconds = 5.toLong()
+
+        val totalDurationInMillis = totalDurationInSeconds * 1000
+        val numofIntervals = totalDurationInMillis / intervalPeriodInMillis
+
+        scrollview.getViewTreeObserver()
+                .addOnGlobalLayoutListener(ViewTreeObserver.OnGlobalLayoutListener {
+                    scrollview.post(Runnable {
+                        val oneScrollAmount = scrollview.maxScrollAmount / numofIntervals
+
+                        Observable.interval(intervalPeriodInMillis, TimeUnit.MILLISECONDS)
+                                .take(numofIntervals)
+                                .subscribe {
+                                    Log.d(TAG, "onCreate: Observable.interval")
+
+                                    Log.d(TAG, "onCreate: oneScrollAmount.toInt()=${oneScrollAmount.toInt()}" +
+                                            ", scrollview.maxScrollAmount=${scrollview.maxScrollAmount}" +
+                                            ", scrollview.isSmoothScrollingEnabled=${scrollview.isSmoothScrollingEnabled}" +
+                                            ", scrollview.scrollY=${scrollview.scrollY}")
+
+                                    scrollview.scrollBy(0, oneScrollAmount.toInt())
+//                                    scrollview.smoothScrollBy(0, oneScrollAmount.toInt())
+                                }
+                    })
+                })
 
         btn_arrowScroll.setOnClickListener {
             scrollview.fullScroll(View.FOCUS_DOWN)
